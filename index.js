@@ -17,7 +17,7 @@ module.exports = {
         var regLowerCase = /[a-z]/;
         var regUpperCase = /[A-Z]/;
         var regDigit = /[0-9]/;
-        var regSpecialChar = /[!._+-]/;
+        var regSpecialChar = /[!._+,;:#=-]/;
 
         var iter = 0;
         while (!(secret.length >= targetLength && regLowerCase.test(secret) && regUpperCase.test(secret) && regDigit.test(secret) && regSpecialChar.test(secret))) {
