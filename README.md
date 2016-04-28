@@ -1,2 +1,2 @@
-# gennifer
+# Jennifer
 Generate passwords in NodeJS
