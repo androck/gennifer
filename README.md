@@ -1,2 +1,5 @@
 # Jennifer
-Generate passwords in NodeJS
+
+Generate and verify passwords in NodeJS
+
+
