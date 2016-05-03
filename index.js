@@ -1,26 +1,27 @@
-// This module generates a password from random bytes and does a quality check if it contains all regex character classes
+// This module generates a password from random bytes and does a quality check if it contains all this.regex character classes
 
 var crypto = require('crypto');
 
 module.exports = {
 
-    // throws an error if it can't generate the desired password length OR returns an object of
+    // adjust this character classes to change output of passwords
+    regLowerCase : /[a-z]/,
+    regUpperCase : /[A-Z]/,
+    regDigit : /[0-9]/,
+    regSpecialChar : /[!._+,;:#=-]/,
+
+
+    // generate(targetLength) throws an error if it can't generate the desired password length OR returns an object of
     // {
     //      secret:     password,       //  your generated password
     //      iterations: Number          // shows how many blocks of randomBytes were needed
     // }
-
     generate : function (targetLength) {
         var secret = "";
         if (!targetLength || targetLength < 8) throw Error("You must use at least 8 characters as targetLength. ->  gennifer(targetLength)");
-        // adjust this character classes to change output of passwords
-        var regLowerCase = /[a-z]/;
-        var regUpperCase = /[A-Z]/;
-        var regDigit = /[0-9]/;
-        var regSpecialChar = /[!._+,;:#=-]/;
 
         var iter = 0;
-        while (!(secret.length >= targetLength && regLowerCase.test(secret) && regUpperCase.test(secret) && regDigit.test(secret) && regSpecialChar.test(secret))) {
+        while (!(secret.length >= targetLength && this.regLowerCase.test(secret) && this.regUpperCase.test(secret) && this.regDigit.test(secret) && this.regSpecialChar.test(secret))) {
             iter++;
             if (iter > 10000) throw Error("Cannot generate a password with desired character classes");
             secret = "";
@@ -29,10 +30,18 @@ module.exports = {
                 if (secret.length >= targetLength) break;
                 //if (32 < value && value < 127) secret = secret + String.fromCharCode(value);
                 value = String.fromCharCode(value);
-                if (regLowerCase.test(value) || regUpperCase.test(value) || regDigit.test(value) || regSpecialChar.test(value)) secret = secret + value;
+                if (this.regLowerCase.test(value) || this.regUpperCase.test(value) || this.regDigit.test(value) || this.regSpecialChar.test(value)) secret = secret + value;
             }
         }
         return {secret : secret, iterations: iter};
+    },
+
+    // verify(secret, targetLength) verifies if secret contains characters of all character classes and has length targetLength, returns true or throws an Error
+    verify : function (secret, targetLength) {
+
+        if (!(secret.length >= targetLength && this.regLowerCase.test(secret) && this.regUpperCase.test(secret) && this.regDigit.test(secret) && this.regSpecialChar.test(secret))) throw Error("Passwort entspricht nicht den aktuellen Richtlinien")
+        return true;
     }
+
 
 }
